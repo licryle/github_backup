@@ -27,10 +27,10 @@
 
             export PIP_DISABLE_PIP_VERSION_CHECK=1
 
-            python -m pip install --upgrade pip
-
-            if [ -f requirements.txt ]; then
+            if [ requirements.txt -nt env/.pip_installed ]; then
+              python -m pip install --upgrade pip
               python -m pip install -r requirements.txt
+              touch env/.pip_installed
             fi
           '';
         };
