@@ -8,12 +8,6 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-        python = pkgs.python3.withPackages (ps: with ps; [
-          pip
-          setuptools
-          wheel
-          yt-dlp
-        ]);
       in {
         devShells.default = pkgs.mkShell {
           packages = [
@@ -24,6 +18,21 @@
             pkgs.ffmpeg
             pkgs.rclone
           ];
+          shellHook = ''
+            if [ ! -d "env" ]; then
+              virtualenv env
+            fi
+
+            source env/bin/activate
+
+            export PIP_DISABLE_PIP_VERSION_CHECK=1
+
+            python -m pip install --upgrade pip
+
+            if [ -f requirements.txt ]; then
+              python -m pip install -r requirements.txt
+            fi
+          '';
         };
       });
 }
