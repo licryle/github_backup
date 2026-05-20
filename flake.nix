@@ -17,6 +17,8 @@
 
             pkgs.ffmpeg
             pkgs.rclone
+
+            pkgs.docker
           ];
           shellHook = ''
             if [ ! -d "env" ]; then
