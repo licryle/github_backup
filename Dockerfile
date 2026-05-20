@@ -18,13 +18,18 @@ RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
 # --- copy code ---
-COPY . .
+COPY ./src/yt2podcast ./yt2podcast
 
 # --- optional writable data dir ---
-RUN mkdir -p /data && chown -R appuser:appuser /data /app
+RUN mkdir -p /app/data && chown -R appuser:appuser /app/data
+RUN mkdir -p /app/config && chown -R appuser:appuser /app/config
 
 USER appuser
 
 ENV PATH="/home/appuser/.local/bin:${PATH}"
 
-CMD ["python", "-u", "src/yt2podcast/yt2podcast.py"]
+CMD ["env", \
+     "DATA_DIR=/app/data", \
+     "CONFIG_DIR=/app/config", \
+     "COOKIES_FILE=/app/config/cookies.txt", \
+     "python", "-u", "/app/yt2podcast/yt2podcast.py"]
