@@ -1,0 +1,17 @@
+.direnv
+.envrc
+flake.nix
+flake.lock
+/__pycache__
+/src/data
+*.pyc
+*.pyo
+*.pyd
+.db
+.git
+.gitignore
+.vscode
+.idea
+
+# Include for Docker
+!src/yt2podcast/

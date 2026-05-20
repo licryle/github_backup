@@ -1,3 +1,4 @@
-.cache/
-env/
-public_html/
+/src/data/
+.direnv
+__pycache__
+.env
