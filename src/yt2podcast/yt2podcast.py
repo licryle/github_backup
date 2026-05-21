@@ -7,7 +7,7 @@ import subprocess
 import logging
 from pathlib import Path
 from dotenv import load_dotenv
-from tg_logging import init_logging, TGLoggingConfig
+from tglogging import init_logging, TGLoggingConfig
 from config import load_app_config
 
 # Load environment variables
