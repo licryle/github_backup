@@ -32,4 +32,4 @@ CMD ["env", \
      "DATA_DIR=/app/data", \
      "CONFIG_DIR=/app/config", \
      "COOKIES_FILE=/app/config/cookies.txt", \
-     "python", "-u", "/app/yt2podcast/yt2podcast.py"]
+     "python", "-m", "yt2podcast", "run"]
