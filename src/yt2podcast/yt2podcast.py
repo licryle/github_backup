@@ -205,6 +205,7 @@ def main():
         logger.info("FTP sync completed successfully.")
     except Exception as e:
         logger.error(f"FTP Sync failed: {e}")
+        raise e
     logger.info("Script finished successfully at standard datetime.")
 
 if __name__ == "__main__":
@@ -212,5 +213,5 @@ if __name__ == "__main__":
         main()
         logger.priority_info(f"Success")
     except Exception as e:
-        logger.priority_info(f"Run Failed!\n\nError details:\n{e}")
+        logger.critical(f"Run Failed!\n\nError details:\n{e}")
         sys.exit(1)
