@@ -37,4 +37,3 @@ def upload(cfg: AppConfig, logger: logging.Logger) -> None:
         logger.info("FTP sync completed successfully.")
     except Exception as e:
         logger.error(f"FTP Sync failed: {e}")
-        raise
