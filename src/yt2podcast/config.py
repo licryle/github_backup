@@ -1,4 +1,6 @@
 import os
+import logging, tglogging
+
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional
 def _clean_value(value: str) -> str:
@@ -17,12 +19,12 @@ def _parse_chat_ids(env_name: str) -> List[str]:
 
 # Mapping from logging level to its corresponding environment variable name
 _LEVEL_CHAT_ENV: Dict[int, str] = {
-    10: 'TELEGRAM_CHAT_IDS_DEBUG',
-    20: 'TELEGRAM_CHAT_IDS_INFO',
-    25: 'TELEGRAM_CHAT_IDS_PRIORITY_INFO',
-    30: 'TELEGRAM_CHAT_IDS_WARNING',
-    40: 'TELEGRAM_CHAT_IDS_ERROR',
-    50: 'TELEGRAM_CHAT_IDS_CRITICAL',
+    logging.DEBUG:          'TELEGRAM_CHAT_IDS_DEBUG',
+    logging.INFO:           'TELEGRAM_CHAT_IDS_INFO',
+    logging.PRIORITY_INFO:  'TELEGRAM_CHAT_IDS_PRIORITY_INFO',
+    logging.WARNING:        'TELEGRAM_CHAT_IDS_WARNING',
+    logging.ERROR:          'TELEGRAM_CHAT_IDS_ERROR',
+    logging.CRITICAL:       'TELEGRAM_CHAT_IDS_CRITICAL',
 }
 
 @dataclass(frozen=True)
