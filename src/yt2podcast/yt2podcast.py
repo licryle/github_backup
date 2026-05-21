@@ -29,6 +29,7 @@ START_DATE = os.getenv("START_DATE", "20250701")
 HOSTNAME = os.getenv("HOSTNAME", "")
 FTP_LOGIN = os.getenv("FTP_LOGIN", "")
 FTP_PASSWORD = os.getenv("FTP_PASSWORD", "")
+FTP_PATH = os.getenv("FTP_PATH", "/public_html")
 
 # Cookies configuration
 COOKIES_FILE = os.getenv("COOKIES_FILE", "")
@@ -173,20 +174,12 @@ def main():
     # 7. Upload to FTP using rclone-python wrapper (best-effort, non-blocking)
     from rclone_python import rclone
     logger.info("Syncing files to remote FTP host...")
-    try:
-        obs_res = subprocess.run(["rclone", "obscure", FTP_PASSWORD], capture_output=True, text=True, check=True)
-        obs_pass = obs_res.stdout.strip()
-        logger.debug("Obscured FTP password")
-    except Exception as e:
-        logger.warning(f"Failed to obscure FTP password: {e}")
-        logger.info("Continuing without password obscuring...")
-        obs_pass = FTP_PASSWORD
     source_path = f"{HTML_DIR}/"
-    dest_path = f":ftp:/domains/{HOSTNAME}/public_html/"
+    dest_path = f"ftp:/{FTP_PATH}"
     extra_args = [
         "--ftp-host", HOSTNAME,
         "--ftp-user", FTP_LOGIN,
-        "--ftp-pass", obs_pass,
+        "--ftp-pass", FTP_PASSWORD,
         "--size-only",
         "--transfers", "1",
         "--checkers", "1",
