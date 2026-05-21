@@ -111,14 +111,17 @@ def process_url(url, cache_set):
         if COOKIES_FILE and os.path.exists(COOKIES_FILE):
             download_cmd.extend(["--cookies", COOKIES_FILE])
         logger.debug(f"Running command {' '.join(download_cmd)}")
-        res = subprocess.run(download_cmd)
+        res = subprocess.run(download_cmd, capture_output=True, text=True)
         if res.returncode == 0:
             with open(CACHE_FILE, "a", encoding="utf-8") as f:
                 f.write(f"{cache_key}\n")
             cache_set.add(cache_key)
             logger.info(f"Successfully processed and cached {video_id}")
         else:
-            logger.error(f"Failed to process video {video_id}. Not adding to cache.")
+            if "video is private" in res.stdout + res.stderr:
+                logger.warning(f"Cannot process video https://www.youtube.com/watch?v={video_id}. Video is private. Not adding to cache.")
+            else:
+                logger.error(f"Failed to process video https://www.youtube.com/watch?v={video_id}. Not adding to cache.")
 
 def main():
     logger.info("Script started at standard datetime.")
