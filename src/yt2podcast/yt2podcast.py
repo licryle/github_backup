@@ -80,7 +80,8 @@ def process_url(url, cache_set):
         logger.warning(f"Failed to extract playlist video list from {url}: {e}")
         return
     video_count = len(video_ids)
-    logger.info(f"Found {video_count} videos in playlist/channel.")
+    cached_count = sum(1 for x in video_ids if f"youtube {x}" in cache_set)
+    logger.info(f"Found {video_count} videos in playlist/channel. {cached_count} already cached. {video_count-cached_count} to process.")
     for index, video_id in enumerate(video_ids, start=1):
         if not video_id:
             continue
