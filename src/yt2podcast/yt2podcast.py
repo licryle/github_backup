@@ -7,7 +7,7 @@ import subprocess
 import logging
 from pathlib import Path
 from dotenv import load_dotenv
-from tglogging import init_logging, TGLoggingConfig
+from tglogging import configure_logger, LoggingConfig
 from config import load_app_config
 
 # Load environment variables
@@ -42,13 +42,13 @@ CACHE_FILE = os.path.join(CACHE_DIR, f"yt-dlp-{PODCAST_NAME}-archive")
 # Initialise logger (set VERBOSE=1 env var for debug)
 cfg = load_app_config()
 
-tg_cfg = TGLoggingConfig(
+tg_cfg = LoggingConfig(
     log_file_path=cfg.log_file_path,
     telegram_bot_token=cfg.telegram_bot_token,
     level_chat_ids=cfg.level_chat_ids,
 )
 
-logger = init_logging('yt2podcast', tg_cfg, verbose=os.getenv("VERBOSE", "0") == "1")
+logger = configure_logger('yt2podcast', tg_cfg, verbose=os.getenv("VERBOSE", "0") == "1")
 
 def update_ytdlp():
     logger.info("Checking and updating yt-dlp to the latest version...")

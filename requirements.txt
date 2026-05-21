@@ -2,4 +2,4 @@ yt-dlp
 geneRSS
 python-dotenv
 rclone-python
-tglogging @ git+https://github.com/licryle/tglogging.git@main
+tglogging @ git+https://github.com/licryle/tglogging.git@v0.0.2
