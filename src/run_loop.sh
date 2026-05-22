@@ -16,7 +16,7 @@ export CONFIG_DIR=/app/config
 export COOKIES_FILE=/app/config/cookies.txt
 
 while true; do
-    echo 'exec python -m yt2podcast run';
+    exec python -m yt2podcast run;
 
     if [ "${SYNC_INTERVAL:--1}" -lt 0 ]; then
         echo "SYNC_INTERVAL < 0, exiting."
