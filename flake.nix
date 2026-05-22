@@ -13,7 +13,11 @@
           packages = [
             pkgs.python3
             pkgs.python3Packages.pip
-            pkgs.python3Packages.virtualenv
+            pkgs.python3Packages.setuptools
+            pkgs.python3Packages.wheel
+            pkgs.python3Packages.pytest
+            pkgs.python3Packages.pygments
+            pkgs.python3Packages.build
 
             pkgs.ffmpeg
             pkgs.rclone
@@ -28,6 +32,7 @@
             source env/bin/activate
 
             export PIP_DISABLE_PIP_VERSION_CHECK=1
+            export PYTHONPATH=$PWD/src:$PYTHONPATH
 
             if [ requirements.txt -nt env/.pip_installed ]; then
               python -m pip install --upgrade pip
