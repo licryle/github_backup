@@ -28,12 +28,8 @@ USER appuser
 
 ENV PATH="/home/appuser/.local/bin:${PATH}"
 
-# Default sync interval (1 day)
-ENV SYNC_INTERVAL=86400
+# Default sync interval is one off run
+ENV SYNC_INTERVAL=-1
 
-CMD sh -c "while true; \
-            do env DATA_DIR=/app/data CONFIG_DIR=/app/config COOKIES_FILE=/app/config/cookies.txt\
-            python -m yt2podcast run;\
-            echo \"Sleeping for ${SYNC_INTERVAL} seconds...\";\
-            sleep ${SYNC_INTERVAL};\
-        done"
+COPY ./src/run_loop.sh /app/run_loop.sh
+CMD ["/app/run_loop.sh"]
