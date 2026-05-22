@@ -40,11 +40,15 @@ def upload(cfg: AppConfig, logger: logging.Logger) -> None:
         ]
 
         logger.info("Starting FTP sync.")
-        process = subprocess.run(cmd, capture_output=False)
+        process = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
         if process.returncode == 0:
             logger.info("FTP sync completed successfully.")
         else:
-            logger.error(f"Rclone failed with exit code {process.returncode}, error {process.stderr}")
+            # Capture and log the actual rclone error
+            logger.error(
+                f"Rclone failed with exit code {process.returncode}. "
+                f"Error output:\n{process.stderr.strip()}"
+            )
     except Exception as e:
         logger.error(f"FTP Sync failed: {e}")
