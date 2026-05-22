@@ -28,8 +28,12 @@ USER appuser
 
 ENV PATH="/home/appuser/.local/bin:${PATH}"
 
-CMD ["env", \
-     "DATA_DIR=/app/data", \
-     "CONFIG_DIR=/app/config", \
-     "COOKIES_FILE=/app/config/cookies.txt", \
-     "python", "-m", "yt2podcast", "run"]
+# Default sync interval (1 day)
+ENV SYNC_INTERVAL=86400
+
+CMD sh -c "while true; \
+            do env DATA_DIR=/app/data CONFIG_DIR=/app/config COOKIES_FILE=/app/config/cookies.txt\
+            python -m yt2podcast run;\
+            echo \"Sleeping for ${SYNC_INTERVAL} seconds...\";\
+            sleep ${SYNC_INTERVAL};\
+        done"
