@@ -22,6 +22,7 @@
             pkgs.python3Packages.pygithub
             pkgs.python3Packages.gitpython
 
+            pkgs.gitleaks
             pkgs.podman
           ];
           shellHook = ''
