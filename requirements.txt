@@ -1,4 +1,6 @@
-yt-dlp
-geneRSS
 python-dotenv
+PyGithub
+GitPython
 tglogging @ git+https://github.com/licryle/tglogging.git@v0.0.3
+cryptography
+requests

@@ -18,10 +18,9 @@
             pkgs.python3Packages.pytest
             pkgs.python3Packages.pygments
             pkgs.python3Packages.build
-
-            pkgs.ffmpeg
-            pkgs.rclone
-            pkgs.gitleaks
+            pkgs.python3Packages.cryptography
+            pkgs.python3Packages.pygithub
+            pkgs.python3Packages.gitpython
 
             pkgs.podman
           ];
