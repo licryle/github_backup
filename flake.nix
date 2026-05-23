@@ -21,6 +21,7 @@
 
             pkgs.ffmpeg
             pkgs.rclone
+            pkgs.gitleaks
 
             pkgs.podman
           ];
