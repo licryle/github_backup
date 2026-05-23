@@ -1,5 +1,5 @@
 #!/bin/sh
-# run_loop.sh — runs yt2podcast with optional sync interval
+# run_loop.sh — runs github_backup with optional sync interval
 
 trap 'echo "Caught SIGINT, exiting"; exit 0' INT
 sleep_interruptible() {
@@ -11,12 +11,12 @@ sleep_interruptible() {
 }
 
 # set environment variables
-export DATA_DIR=/app/data
-export CONFIG_DIR=/app/config
-export COOKIES_FILE=/app/config/cookies.txt
+export BACKUP_DIR=/app/backups
+export TOKEN_KEY_FILE=/app/secrets/key
+export TOKEN_ENCRYPTED_FILE=/app/secrets/tok
 
 while true; do
-    exec python -m yt2podcast run;
+    python -m github_backup run;
 
     if [ "${SYNC_INTERVAL:--1}" -lt 0 ]; then
         echo "SYNC_INTERVAL < 0, exiting."
