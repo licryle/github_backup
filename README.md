@@ -79,6 +79,7 @@ SYNC_INTERVAL=
 
 ### Direct execution
 ```bash
+source .env
 python -m yt2podcast run
 ```
 
