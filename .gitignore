@@ -1,6 +1,7 @@
-/src/data/
+/backups/
 .direnv
 __pycache__
 .env
 cookies.txt
 /.idea
+/.secrets
