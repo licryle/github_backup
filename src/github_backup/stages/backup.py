@@ -6,6 +6,8 @@ from github import Github, GithubException
 import git
 from ..config import AppConfig
 from .auth import get_github_token
+import time
+from datetime import datetime, timezone
 
 @dataclass
 class BackupSummary:
@@ -23,7 +25,47 @@ class BackupSummary:
     def success(self) -> bool:
         return self.failed == 0
 
+def release_crash_lock(logger: logging.Logger, repo_path: Path):
+    """Checks for a stale git index lock file (> 20 hours old) and removes it."""
+    lock_file = repo_path / ".git" / "index.lock"
+    
+    if not lock_file.exists():
+        return True
+    else:
+        try:
+            # Get the file modification time
+            mtime = lock_file.stat().st_mtime
+            lock_time = datetime.fromtimestamp(mtime, tz=timezone.utc)
+            now = datetime.now(timezone.utc)
+            
+            # Calculate the file age in hours
+            age_hours = (now - lock_time).total_seconds() / 3600
+            
+            if age_hours > 20:
+                logger.warning(
+                    f"⚠️ Found stale git lock file at {lock_file} "
+                    f"({age_hours:.1f} hours old). Removing it to prevent crash loop."
+                )
+                lock_file.unlink(missing_ok=True)
+                return True
+            else:
+                logger.info(
+                    f"ℹ️ Active git lock found at {lock_file} "
+                    f"({age_hours:.1f} hours old). Leaving it alone."
+                )
+                return False
+        except Exception as e:
+            return True  # If we can't inspect or delete the lock, give a chance to normal pull
+            logger.error(f"Failed to inspect or delete lock file at {lock_file}: {e}")
+
 def update_repo(logger: logging.Logger, auth_url: str, gh_repo: any, repo_name: str, repo_path: str):
+    # Ensure repo_path is a Path object for the lock handler
+    path_obj = Path(repo_path)
+    
+    # Release stale git locks before trying to initialize or fetch
+    if not release_crash_lock(logger, path_obj):
+        raise Exception(f"Active git lock file found for {repo_name}. Will retry on next run.")
+
     repo = git.Repo(str(repo_path))
     origin = repo.remotes.origin
 
