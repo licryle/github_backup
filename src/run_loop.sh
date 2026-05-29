@@ -24,7 +24,12 @@ INTERVAL=$(printf '%s' "$INTERVAL" | tr -cd '0-9-')
 [ -z "$INTERVAL" ] && INTERVAL=-1
 
 while true; do
-    python -m github_backup run;
+    # 1. Run Python in the background so the shell stays alive
+    python -m github_backup run &
+    child_pid=$!
+
+    # 2. Tell the shell script to wait for Python, but allow it to forward signals, like SIGINT
+    wait "$child_pid"
 
     if [ "$INTERVAL" -lt 0 ]; then
         echo "SYNC_INTERVAL < 0, exiting."
