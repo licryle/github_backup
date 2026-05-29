@@ -29,7 +29,7 @@ if [ "$INTERVAL" -lt 0 ]; then
 fi
 
 while true; do
-    echo "$INTERVAL"
+    python -m github_backup run;
     echo "Sleeping for $INTERVAL seconds..."
     sleep_interruptible "$INTERVAL"
 done
