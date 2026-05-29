@@ -21,15 +21,16 @@ export TOKEN_ENCRYPTED_FILE=/app/secrets/tok
 INTERVAL="${SYNC_INTERVAL:-1}"
 INTERVAL=$(printf '%s' "$INTERVAL" | tr -cd '0-9-')
 
-[ -z "$INTERVAL" ] && INTERVAL=0
-
-if [ "$INTERVAL" -lt 0 ]; then
-    echo "SYNC_INTERVAL < 0, exiting."
-    exit 0
-fi
+[ -z "$INTERVAL" ] && INTERVAL=-1
 
 while true; do
     python -m github_backup run;
+
+    if [ "$INTERVAL" -lt 0 ]; then
+        echo "SYNC_INTERVAL < 0, exiting."
+        exit 0
+    fi
+
     echo "Sleeping for $INTERVAL seconds..."
     sleep_interruptible "$INTERVAL"
 done
