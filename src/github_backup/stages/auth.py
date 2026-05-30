@@ -53,7 +53,7 @@ def write_github_token(cfg: AppConfig, logger: logging.Logger, token: str) -> bo
         try:
             encrypted = fernet.encrypt(token.encode('utf-8'))
             Path(cfg.token_encrypted_file).write_bytes(encrypted)
-            logger.info("Successfully authenticated and saved encrypted token.")
+            logger.priority_info("Successfully authenticated and saved encrypted token.")
         except Exception as e:
             logger.error(f"Failed to save encrypted token: {e}")
 
