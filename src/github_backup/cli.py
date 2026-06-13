@@ -2,7 +2,7 @@ import argparse
 import sys
 import logging
 from dotenv import load_dotenv
-from tglogging import configure_logger, LoggingConfig
+from tglogging import get_logger, LoggingConfig
 
 from .config import load_app_config
 from .stages.auth import check_auth
@@ -26,8 +26,9 @@ def main(argv: list = None) -> None:
         log_file_path=cfg.log_file_path,
         telegram_bot_token=cfg.telegram_bot_token,
         level_chat_ids=cfg.level_chat_ids,
+        verbose=args.verbose
     )
-    logger = configure_logger('github_backup', tg_cfg, verbose=args.verbose)
+    logger = get_logger('github_backup', tg_cfg)
 
     try:
         if args.command == 'auth':
